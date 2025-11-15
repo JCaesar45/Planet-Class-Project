@@ -1,0 +1,122 @@
+/* Space background */
+body {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* Space theme font from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap");
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 10px #000;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+  color: #ffd700;
+}
+
+/* Orbit container */
+.orbit-container {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Star styles */
+.star {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: yellow;
+  border-radius: 50%;
+  box-shadow: 0 0 20px 5px yellow;
+  z-index: 2;
+}
+
+/* Planet styles */
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.planet:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+}
+
+/* Animation for orbiting */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Generate orbit wrapper dynamically for each planet */
+.orbit-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+}
+
+/* Info Box */
+#infoBox {
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 0 15px #000;
+  font-family: "Orbitron", sans-serif;
+}
+
+/* Form styles */
+#planetForm {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px;
+}
+
+#planetForm input {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-family: "Orbitron", sans-serif;
+}
+
+#planetForm button {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #ffd700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Orbitron", sans-serif;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+#planetForm button:hover {
+  background-color: #e6c200;
+}
