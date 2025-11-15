@@ -1,0 +1,147 @@
+// JavaScript code to handle planets and animation
+
+// Helper function to generate random colors for planets
+function getRandomColor() {
+  const colors = [
+    "#ff6347",
+    "#87ceeb",
+    "#daa520",
+    "#adff2f",
+    "#ff69b4",
+    "#ba55d3",
+    "#00ced1",
+    "#ffa500"
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// Planet class in JS mimicking the Python class
+class Planet {
+  constructor(name, planet_type, star) {
+    // Validation
+    if (
+      typeof name !== "string" ||
+      typeof planet_type !== "string" ||
+      typeof star !== "string"
+    ) {
+      throw new TypeError("name, planet type, and star must be strings");
+    }
+    if (name.trim() === "" || planet_type.trim() === "" || star.trim() === "") {
+      throw new ValueError(
+        "name, planet_type, and star must be non-empty strings"
+      );
+    }
+    this.name = name;
+    this.planet_type = planet_type;
+    this.star = star;
+  }
+
+  orbit() {
+    return `${this.name} is orbiting around ${this.star}...`;
+  }
+
+  toString() {
+    return `Planet: ${this.name} | Type: ${this.planet_type} | Star: ${this.star}`;
+  }
+}
+
+const orbitContainer = document.getElementById("orbitContainer");
+const infoBox = document.getElementById("infoBox");
+
+// Array to hold planet instances
+const planets = [];
+
+// Function to create star element
+function createStar() {
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.top = "50%";
+  star.style.left = "50%";
+  star.style.transform = "translate(-50%, -50%)";
+  star.innerHTML = "";
+  orbitContainer.appendChild(star);
+  return star;
+}
+
+// Function to create orbiting planet element
+function createPlanet(planet) {
+  // Create orbit wrapper for animation
+  const orbitWrapper = document.createElement("div");
+  orbitWrapper.className = "orbit-wrapper";
+
+  // Random radius for orbit
+  const radius = Math.random() * 150 + 50; // 50px to 200px
+
+  // Set orbit animation
+  orbitWrapper.style.width = `${radius * 2}px`;
+  orbitWrapper.style.height = `${radius * 2}px`;
+  orbitWrapper.style.animation = `orbit ${
+    10 + Math.random() * 20
+  }s linear infinite`;
+
+  // Create planet element
+  const planetDiv = document.createElement("div");
+  planetDiv.className = "planet";
+  const size = Math.random() * 20 + 10; // 10px to 30px
+  planetDiv.style.width = `${size}px`;
+  planetDiv.style.height = `${size}px`;
+  planetDiv.style.backgroundColor = getRandomColor();
+
+  // Position the planet at the edge of orbit
+  planetDiv.style.position = "absolute";
+  planetDiv.style.top = "0";
+  planetDiv.style.left = `${radius}px`;
+  planetDiv.dataset.name = planet.name;
+  planetDiv.dataset.type = planet.planet_type;
+  planetDiv.dataset.star = planet.star;
+
+  // Hover to show info
+  planetDiv.addEventListener("mouseenter", () => {
+    infoBox.innerHTML = `<strong>${planet.name}</strong><br/>Type: ${planet.planet_type}<br/>Star: ${planet.star}`;
+  });
+  planetDiv.addEventListener("mouseleave", () => {
+    infoBox.innerHTML = "Click on a planet to see its details.";
+  });
+  // Click to show orbit info
+  planetDiv.addEventListener("click", () => {
+    alert(planet.orbit());
+  });
+
+  // Append planet to orbit wrapper
+  orbitWrapper.appendChild(planetDiv);
+  // Append orbit wrapper to container
+  orbitContainer.appendChild(orbitWrapper);
+}
+
+// Initialize with three planets
+function initPlanets() {
+  const p1 = new Planet("Earth", "Terrestrial", "Sun");
+  const p2 = new Planet("Jupiter", "Gas Giant", "Sun");
+  const p3 = new Planet("Proxima b", "Exoplanet", "Proxima Centauri");
+  planets.push(p1, p2, p3);
+  // Create star
+  createStar();
+  // Create planets
+  planets.forEach((p) => createPlanet(p));
+}
+
+initPlanets();
+
+// Handle form submission to add new planets
+document.getElementById("planetForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.getElementById("nameInput").value.trim();
+  const type = document.getElementById("typeInput").value.trim();
+  const star = document.getElementById("starInput").value.trim();
+
+  // Validation
+  try {
+    const newPlanet = new Planet(name, type, star);
+    planets.push(newPlanet);
+    createPlanet(newPlanet);
+    // Reset form
+    document.getElementById("planetForm").reset();
+  } catch (err) {
+    alert(err.message);
+  }
+});
